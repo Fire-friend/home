@@ -1,195 +1,337 @@
 <!doctype html>
-<html>
-
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Homepage of Jiawei Wu</title>
+    <title>Jiawei Wu - Academic Homepage</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
-            font-family: Helvetica, Tahoma, Arial;
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --light-accent: rgba(52, 152, 219, 0.1);
+            --text-color: #e0e0e0;
+            --secondary-text: #a0a0a0;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --section-padding: 2rem 0;
+        }
+        
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             line-height: 1.6;
-            background-color: #f4f4f9;
-            color: #333;
+            font-size: 16px;
         }
-
-        .wrapper {
-            max-width: 1100px;
+        
+        .container {
+            max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            padding: 0 20px;
         }
-
-        h1, h3, h4 {
-            color: #2c3e50;
+        
+        header {
+            padding: 4rem 0 2rem;
+            text-align: center;
         }
-
+        
+        .profile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .profile-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-color);
+        }
+        
+        .profile-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-weight: 700;
+        }
+        
+        h2 {
+            font-size: 1.75rem;
+            margin: 0.5rem 0;
+            color: var(--accent-color);
+            font-weight: 600;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        
         p {
-            margin: 5px 0;
+            margin: 0.5rem 0;
+            color: var(--secondary-text);
         }
-
+        
+        .title {
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--secondary-text);
+        }
+        
         a {
-            color: #3498db;
+            color: var(--accent-color);
             text-decoration: none;
+            transition: all 0.2s ease;
         }
-
+        
         a:hover {
+            color: #5dade2;
             text-decoration: underline;
         }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        ul li {
-            margin: 5px 0;
-        }
-
-        .header {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 10px 0;
-        }
-
-        .header img {
-            width: 150px;
-            height: auto;
-            margin-right: 10px;
-            border-radius: 50%;
-            /* 调整图片的样式，可以加圆角等效果 */
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-        }
-
-        .header p {
-            font-size: 1.2em;
-            color: #555;
-        }
-
+        
         section {
-            margin-top: 30px;
+            padding: var(--section-padding);
         }
-
-        .news, .research, .services, .awards, .publications {
-            margin-top: 30px;
+        
+        .section-content {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 1rem;
         }
-
-        /* 定制分割线样式 */
-        hr.custom-divider {
-            border: none;
-            height: 2px;
-            background-color: #3498db; /* 分割线的颜色 */
-            margin: 20px 0;
-            border-radius: 5px;
+        
+        ul {
+            list-style-type: none;
+        }
+        
+        li {
+            margin: 1rem 0;
             position: relative;
+            padding-left: 1.5rem;
         }
-
-        hr.custom-divider::before {
-            content: '⬤ ⬤ ⬤'; /* 分割线的装饰图标 */
-            font-size: 1.2em;
-            color: #3498db;
+        
+        li::before {
+            content: "•";
+            color: var(--accent-color);
+            font-weight: bold;
             position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #fff;
-            padding: 0 10px;
+            left: 0;
         }
-
+        
+        .publication {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .publication:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .pub-title {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        .pub-authors {
+            color: var(--secondary-text);
+            margin: 0.5rem 0;
+        }
+        
+        .pub-venue {
+            font-style: italic;
+            color: var(--secondary-text);
+        }
+        
+        .highlight {
+            text-decoration: underline;
+        }
+        
+        .pub-links {
+            margin-top: 0.5rem;
+        }
+        
+        .pub-links a {
+            display: inline-block;
+            margin-right: 10px;
+            background-color: var(--light-accent);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+        
+        .pub-links a:hover {
+            background-color: var(--accent-color);
+            color: #fff;
+            text-decoration: none;
+        }
+        
+        .news-item {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        
+        .news-date {
+            font-weight: 600;
+            color: var(--accent-color);
+            min-width: 100px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--secondary-text);
+            font-size: 0.9rem;
+        }
+        
         @media (max-width: 768px) {
-            .header {
+            .profile {
                 flex-direction: column;
                 text-align: center;
             }
-
-            .header img {
-                margin-bottom: 20px;
+            
+            .profile-info {
+                width: 100%;
+            }
+            
+            .news-item {
+                flex-direction: column;
+            }
+            
+            .news-date {
+                margin-bottom: 0.3rem;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="wrapper">
-        <section class="header">
-            <img src="https://raw.githubusercontent.com/Fire-friend/home/refs/heads/main/img/potrait.jpg" alt="Jiawei Wu">
-            <!-- 请将 'your-image-url.jpg' 替换为你自己的照片URL -->
-            <div>
-                <h1>Jiawei Wu (吴嘉炜)</h1>
-                <p><em>PhD Candidate</em><br> wujw97@mail2.sysu.edu.cn<br> Sun Yat-sen University, Shenzhen, China.<br>I'm now a second-year Ph.D. student at Sun Yat-sen University, and my adviser is Professor <a href="https://fvl2020.github.io/fvl.github.com/" target="_blank">Zhi Jin</a>.</p>
+    <div class="container">
+        <header>
+            <div class="profile">
+                <img src="https://raw.githubusercontent.com/Fire-friend/home/refs/heads/main/img/potrait.jpg" alt="Jiawei Wu" class="profile-image">
+                <div class="profile-info">
+                    <h1>Jiawei Wu</h1>
+                    <p class="title">PhD Candidate</p>
+                    <p>Sun Yat-sen University, Shenzhen, China</p>
+                    <p>Email: wujw97@mail2.sysu.edu.cn</p>
+                    <p>Advised by Professor <a href="https://fvl2020.github.io/fvl.github.com/" target="_blank">Zhi Jin</a></p>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <h2>Recent News</h2>
+            <div class="section-content">
+                <div class="news-item">
+                    <div class="news-date">Sep 2024</div>
+                    <div>Paper accepted by <strong>ESWA</strong></div>
+                </div>
+                <div class="news-item">
+                    <div class="news-date">Jul 2024</div>
+                    <div>Paper accepted by <strong>ECCV 2024</strong></div>
+                </div>
+                <div class="news-item">
+                    <div class="news-date">Jul 2023</div>
+                    <div>Paper accepted by <strong>TCSVT</strong></div>
+                </div>
+                <div class="news-item">
+                    <div class="news-date">Jun 2023</div>
+                    <div>Paper accepted by <strong>ICML 2023</strong></div>
+                </div>
             </div>
         </section>
 
-        <hr class="custom-divider">
-
-        <section class="news">
-            <h3>Recent News:</h3>
-            <ul>
-				<li><strong>[09/2024]</strong> One paper was accepted by <i><strong>ESWA</strong></i>.</li>
-                <li><strong>[07/2024]</strong> One paper was accepted by <i><strong>ECCV 2024</strong></i>.</li>
-                <li><strong>[07/2023]</strong> One paper was accepted by <i><strong>TCSVT</strong></i>.</li>
-				<li><strong>[06/2023]</strong> One paper was accepted by <i><strong>ICML 2023</strong></i>.</li>
-                <!-- Add more news items here -->
-            </ul>
+        <section>
+            <h2>Research Interests</h2>
+            <div class="section-content">
+                <ul>
+                    <li><strong>Low-level Vision:</strong> Image restoration, diffusion models</li>
+                    <li><strong>AI in Limited Data:</strong> Semi-supervised learning, self-supervised learning, few-shot learning</li>
+                </ul>
+            </div>
         </section>
 
-        <hr class="custom-divider">
-
-        <section class="research">
-            <h3>Research Interests:</h3>
-            <ul>
-                <li><strong>Low level Vision:</strong> image restoration, diffusion model.</li>
-                <li><strong>AI in Limited Data:</strong> semi-supervised learning, self-supervised learning, few-shot learning.</li>
-            </ul>
+        <section>
+            <h2>Activities</h2>
+            <div class="section-content">
+                <ul>
+                    <li>Reviewer of CVPR / ICCV / AAAI / TIP / TMM / TCSVT</li>
+                </ul>
+            </div>
         </section>
 
-        <hr class="custom-divider">
+        <section>
+            <h2>Selected Publications</h2>
+            <div class="section-content">
+                <h3>2024</h3>
+                <div class="publication">
+                    <div class="pub-title">"Leukocyte classification using relative-relationship-guided contrastive learning"</div>
+                    <div class="pub-authors">Zuoyong Li, Qinghua Lin, <span class="highlight">Jiawei Wu</span>, Taotao Lai, Rongteng Wu, David Zhang</div>
+                    <div class="pub-venue">Expert Systems with Applications</div>
+                    <div class="pub-links">
+                        <a href="https://www.sciencedirect.com/science/article/pii/S0957417424022577" target="_blank">PAPER</a>
+                        <a href="https://github.com/AlchemyEmperor/ReCLR" target="_blank">CODE</a>
+                    </div>
+                </div>
+                
+                <div class="publication">
+                    <div class="pub-title">"Unsupervised Variational Translator for Bridging Image Restoration and High-Level Vision Tasks"</div>
+                    <div class="pub-authors"><span class="highlight">Jiawei Wu</span>, Zhi Jin</div>
+                    <div class="pub-venue">ECCV 2024</div>
+                    <div class="pub-links">
+                        <a href="https://arxiv.org/abs/2408.08149" target="_blank">PAPER</a>
+                        <a href="https://github.com/Fire-friend/VaT" target="_blank">CODE</a>
+                    </div>
+                </div>
 
-        <section class="services">
-            <h3>Activities:</h3>
-            <ul>
-                <li>Reviewer of CVPR / ICCV / AAAI / TIP / TMM / TCSVT.</li>
-            </ul>
+                <h3>2023</h3>
+                <div class="publication">
+                    <div class="pub-title">"Information transfer in semi-supervised semantic segmentation"</div>
+                    <div class="pub-authors"><span class="highlight">Jiawei Wu</span>, Haoyi Fan, Zuoyong Li, Guang-Hai Liu, Shouying Lin</div>
+                    <div class="pub-venue">IEEE Transactions on Circuits and Systems for Video Technology</div>
+                    <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/abstract/document/10172351" target="_blank">PAPER</a>
+                    </div>
+                </div>
+                
+                <div class="publication">
+                    <div class="pub-title">"dugMatting: decomposed-uncertainty-guided matting"</div>
+                    <div class="pub-authors"><span class="highlight">Jiawei Wu</span>, Changqing Zhang, Zuoyong Li, Huazhu Fu, Xi Peng, Joey Tianyi Zhou</div>
+                    <div class="pub-venue">ICML 2023</div>
+                    <div class="pub-links">
+                        <a href="https://arxiv.org/abs/2306.01452" target="_blank">PAPER</a>
+                        <a href="https://github.com/Fire-friend/dugMatting" target="_blank">CODE</a>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <hr class="custom-divider">
-
-        <section class="publications">
-            <h3>Selected Publications:</h3>
-            <h4>2024:</h4>
-            <ul>
-                <li><strong>"Leukocyte classification using relative-relationship-guided contrastive learning",</strong>Zuoyong Li, Qinghua Lin, <u>Jiawei Wu</u>, Taotao Lai, Rongteng Wu, David Zhang, Expert Systems with Applications.
-                    <a href="https://www.sciencedirect.com/science/article/pii/S0957417424022577" target="_blank">[PAPER]</a>
-                    <a href="https://github.com/AlchemyEmperor/ReCLR" target="_blank">[CODE]</a>
-                </li>
-				<li><strong>"Unsupervised Variational Translator for Bridging Image Restoration and High-Level Vision Tasks",</strong> <u>Jiawei Wu</u>, Zhi Jin, ECCV 2024.
-                    <a href="https://arxiv.org/abs/2408.08149" target="_blank">[PAPER]</a>
-                    <a href="https://github.com/Fire-friend/VaT" target="_blank">[CODE]</a>
-                </li>
-                <!-- Add more publications here -->
-            </ul>
-			<h4>2023:</h4>
-            <ul>
-                <li><strong>"Information transfer in semi-supervised semantic segmentation",</strong> <u>Jiawei Wu</u>, Haoyi Fan, Zuoyong Li, Guang-Hai Liu, Shouying Lin, IEEE Transactions on Circuits and Systems for Video Technology.
-                    <a href="https://ieeexplore.ieee.org/abstract/document/10172351" target="_blank">[PAPER]</a>
-                </li>
-				<li><strong>"dugMatting: decomposed-uncertainty-guided matting",</strong> <u>Jiawei Wu</u>, Changqing Zhang, Zuoyong Li, Huazhu Fu, Xi Peng, Joey Tianyi Zhou, ICML 2023.
-                    <a href="https://arxiv.org/abs/2306.01452" target="_blank">[PAPER]</a>
-                    <a href="https://github.com/Fire-friend/dugMatting" target="_blank">[CODE]</a>
-                </li>
-                <!-- Add more publications here -->
-            </ul>
-			
-        </section>
+        <footer class="footer">
+            <p>© 2025 Jiawei Wu. Last updated: April 2025</p>
+        </footer>
     </div>
 </body>
-
 </html>
