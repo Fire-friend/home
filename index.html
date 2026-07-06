@@ -4,931 +4,439 @@
     <meta charset="utf-8">
     <title>Jiawei Wu — PhD Candidate, Sun Yat-sen University</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Jiawei Wu — PhD Candidate at Sun Yat-sen University. Research in low-level vision, image restoration, diffusion models, and learning with limited data.">
+    <meta name="description" content="Jiawei Wu — PhD Candidate at Sun Yat-sen University. Research in low-level vision, image restoration, diffusion models, matting, and learning with limited data.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Refined monochromatic palette with a single restrained accent */
-            --bg: #fafaf7;
-            --bg-elevated: #ffffff;
-            --ink: #0a0a0a;
-            --ink-2: #242424;
-            --ink-3: #4a4a4a;
-            --ink-4: #8a8a85;
-            --ink-5: #b8b5ac;
-            --line: #e8e6df;
-            --line-2: #d4d1c8;
-            --accent: #c0392b;
-            --accent-dim: rgba(192, 57, 43, 0.08);
-
-            --serif: 'Instrument Serif', 'Times New Roman', serif;
-            --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --bg: #ffffff;
+            --bg-soft: #f6f7f9;
+            --ink: #202226;
+            --ink-2: #3d4149;
+            --ink-3: #616671;
+            --ink-4: #8b909b;
+            --line: #e6e8ec;
+            --line-2: #d5d8de;
+            --accent: #1d6fb8;
+            --accent-2: #c0392b;
+            --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --serif: 'Lora', Georgia, serif;
             --mono: 'JetBrains Mono', ui-monospace, monospace;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { height: 100%; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: var(--sans);
             background: var(--bg);
-            color: var(--ink);
-            line-height: 1.5;
-            font-size: 13px;
-            font-weight: 400;
+            color: var(--ink-2);
+            font-size: 16px;
+            line-height: 1.7;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            overflow: hidden;
-            letter-spacing: -0.005em;
         }
+        ::selection { background: var(--accent); color: #fff; }
 
-        /* Decorative background: soft radial gradient + ultra-fine grid */
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            background:
-                radial-gradient(ellipse 80% 60% at 15% 0%, rgba(192, 57, 43, 0.035), transparent 60%),
-                radial-gradient(ellipse 60% 40% at 100% 100%, rgba(10, 10, 10, 0.025), transparent 60%),
-                linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 100% 80px,
-                linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 80px 100%;
-            opacity: 0.6;
+        a { color: var(--accent); text-decoration: none; transition: color .15s ease; }
+        a:hover { color: var(--accent-2); }
+
+        /* ─── NAV ─── */
+        .nav {
+            position: sticky; top: 0; z-index: 50;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: saturate(180%) blur(10px);
+            border-bottom: 1px solid var(--line);
         }
+        .nav-inner {
+            max-width: 1080px; margin: 0 auto; padding: 0 28px;
+            height: 54px; display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav .brand { font-weight: 600; color: var(--ink); font-size: 15px; }
+        .nav .brand:hover { color: var(--ink); }
+        .nav-links { display: flex; gap: 22px; }
+        .nav-links a { font-size: 14px; font-weight: 500; color: var(--ink-3); }
+        .nav-links a:hover { color: var(--accent); }
 
-        ::selection { background: var(--ink); color: var(--bg); }
-
-        a { color: inherit; text-decoration: none; transition: color .2s ease; }
-        a:hover { color: var(--accent); }
-
-        /* ═══════════════════════════════════════════════════
-           PAGE
-           ═══════════════════════════════════════════════════ */
-        .page {
-            height: 100vh;
-            padding: 24px;
+        /* ─── LAYOUT: sidebar + main ─── */
+        .wrap {
+            max-width: 1080px; margin: 0 auto; padding: 44px 28px 90px;
             display: grid;
-            grid-template-rows: auto 1fr auto;
-            gap: 16px;
-            position: relative;
-            z-index: 1;
+            grid-template-columns: 260px 1fr;
+            gap: 60px;
+            align-items: start;
         }
+        section { scroll-margin-top: 70px; }
 
-        /* ─── TOP BAR ─────────────────────────────── */
-        .topbar {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            padding: 4px 8px;
-            font-family: var(--mono);
-            font-size: 10px;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: var(--ink-4);
-        }
-        .topbar .l { display: flex; align-items: center; gap: 10px; }
-        .topbar .r { justify-self: end; display: flex; gap: 20px; }
-        .topbar .brand {
-            font-family: var(--serif);
-            font-size: 15px;
-            letter-spacing: 0;
-            text-transform: none;
-            color: var(--ink);
-            justify-self: center;
-        }
-        .topbar .brand em { font-style: italic; color: var(--accent); }
-        .topbar .dot {
-            width: 5px; height: 5px; border-radius: 50%;
-            background: var(--accent);
-            position: relative;
-        }
-        .topbar .dot::after {
-            content: ""; position: absolute; inset: -4px; border-radius: 50%;
-            border: 1px solid var(--accent); opacity: 0.4;
-            animation: ring 2.4s ease-out infinite;
-        }
-        @keyframes ring {
-            0% { transform: scale(0.8); opacity: 0.6; }
-            100% { transform: scale(2); opacity: 0; }
-        }
-        .topbar nav { display: flex; gap: 18px; }
-        .topbar nav a { color: var(--ink-3); position: relative; }
-        .topbar nav a::after {
-            content: ""; position: absolute; left: 0; right: 0; bottom: -4px;
-            height: 1px; background: var(--accent); transform: scaleX(0);
-            transform-origin: left; transition: transform .3s ease;
-        }
-        .topbar nav a:hover::after { transform: scaleX(1); }
-
-        /* ─── MAIN ─────────────────────────────────── */
-        main {
-            display: grid;
-            grid-template-columns: 280px 1fr 1.05fr;
-            gap: 28px;
-            min-height: 0;
-        }
-
-        /* Column card shared */
-        .card {
-            background: var(--bg-elevated);
-            border: 1px solid var(--line);
-            border-radius: 3px;
-            padding: 24px;
-            min-height: 0;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            box-shadow:
-                0 1px 0 rgba(0,0,0,0.02),
-                0 20px 40px -20px rgba(0,0,0,0.06);
-        }
-
-        /* ═══════ LEFT: IDENTITY ═══════ */
-        .col-id {
-            padding: 28px 24px 22px;
-        }
-        .col-id::before {
-            content: "";
-            position: absolute;
-            top: 12px; right: 12px;
-            width: 8px; height: 8px;
-            border-top: 1px solid var(--line-2);
-            border-right: 1px solid var(--line-2);
-        }
-        .col-id::after {
-            content: "";
-            position: absolute;
-            bottom: 12px; left: 12px;
-            width: 8px; height: 8px;
-            border-bottom: 1px solid var(--line-2);
-            border-left: 1px solid var(--line-2);
-        }
-
-        .portrait-wrap {
-            position: relative;
-            width: 140px;
-            margin-bottom: 22px;
-        }
-        .portrait {
-            width: 100%;
-            aspect-ratio: 4 / 5;
-            overflow: hidden;
-            border-radius: 2px;
-            background: var(--line);
-            filter: grayscale(20%) contrast(1.03);
-            transition: filter .5s ease;
-            position: relative;
-        }
-        .portrait img {
-            width: 100%; height: 100%;
+        /* ─── SIDEBAR ─── */
+        .sidebar { position: sticky; top: 78px; }
+        .sidebar img {
+            width: 160px; height: 160px;
             object-fit: cover;
-            transition: transform 1s cubic-bezier(.2,.9,.3,1);
-        }
-        .portrait:hover { filter: grayscale(0); }
-        .portrait:hover img { transform: scale(1.04); }
-        .portrait-wrap::before {
-            content: "";
-            position: absolute;
-            top: 8px; left: -8px;
-            width: 100%; height: 100%;
-            border: 1px solid var(--ink);
-            border-radius: 2px;
-            z-index: -1;
-            opacity: 0.9;
-        }
-
-        .id-name {
-            font-family: var(--serif);
-            font-weight: 400;
-            font-size: 46px;
-            line-height: 0.92;
-            letter-spacing: -0.02em;
-            color: var(--ink);
-            margin-bottom: 8px;
-        }
-        .id-name em { font-style: italic; color: var(--accent); }
-
-        .id-role {
-            font-family: var(--mono);
-            font-size: 9.5px;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--ink-4);
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--line);
-            margin-bottom: 16px;
-        }
-        .id-role .sep { color: var(--line-2); margin: 0 6px; }
-
-        .id-bio {
-            font-family: var(--serif);
-            font-size: 16px;
-            line-height: 1.42;
-            color: var(--ink-2);
-            margin-bottom: 18px;
-            letter-spacing: 0;
-        }
-        .id-bio em { font-style: italic; }
-        .id-bio a {
-            color: var(--ink);
-            border-bottom: 1px solid var(--line-2);
-            padding-bottom: 1px;
-        }
-        .id-bio a:hover { border-color: var(--accent); color: var(--accent); }
-
-        .id-contact {
-            font-family: var(--mono);
-            font-size: 10.5px;
-            line-height: 1.9;
-            color: var(--ink-3);
-            margin-bottom: 18px;
-        }
-        .id-contact .row {
-            display: grid;
-            grid-template-columns: 14px 1fr;
-            gap: 10px;
-            align-items: center;
-        }
-        .id-contact svg {
-            width: 11px; height: 11px;
-            color: var(--ink-4);
-        }
-        .id-contact a:hover { color: var(--accent); }
-
-        .id-socials {
-            display: flex;
-            gap: 6px;
-            margin-top: auto;
-            padding-top: 16px;
-            border-top: 1px solid var(--line);
-        }
-        .id-socials a {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-family: var(--mono);
-            font-size: 9px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            padding: 8px 6px;
-            background: var(--bg);
-            border: 1px solid var(--line-2);
-            border-radius: 2px;
-            color: var(--ink-2);
-            transition: all .2s ease;
-        }
-        .id-socials a svg { width: 11px; height: 11px; }
-        .id-socials a:hover {
-            background: var(--ink);
-            border-color: var(--ink);
-            color: var(--bg);
-        }
-
-        /* ═══════ MIDDLE COLUMN ═══════ */
-        .col-mid {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            min-height: 0;
-        }
-        .col-mid > .card {
-            padding: 20px 22px;
-        }
-
-        .hd {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            margin-bottom: 14px;
-            gap: 12px;
-        }
-        .hd h2 {
-            font-family: var(--serif);
-            font-weight: 400;
-            font-size: 22px;
-            line-height: 1;
-            letter-spacing: -0.015em;
-            color: var(--ink);
-            display: flex;
-            align-items: baseline;
-            gap: 10px;
-        }
-        .hd h2 em { font-style: italic; color: var(--accent); }
-        .hd h2 .num {
-            font-family: var(--mono);
-            font-size: 9px;
-            letter-spacing: 0.22em;
-            color: var(--ink-4);
-            font-style: normal;
-        }
-        .hd .tag {
-            font-family: var(--mono);
-            font-size: 9px;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--ink-4);
-            padding: 3px 8px;
-            background: var(--bg);
-            border: 1px solid var(--line);
-            border-radius: 2px;
-        }
-
-        /* About */
-        .about-text {
-            font-family: var(--serif);
-            font-size: 16.5px;
-            line-height: 1.5;
-            color: var(--ink-2);
-            letter-spacing: 0;
-        }
-        .about-text p { margin-bottom: 10px; }
-        .about-text p:last-child { margin-bottom: 0; }
-        .about-text em { font-style: italic; }
-        .about-text .key {
-            font-style: italic;
-            color: var(--ink);
-            position: relative;
-            white-space: nowrap;
-        }
-        .about-text .key::after {
-            content: "";
-            position: absolute;
-            left: -1px; right: -1px; bottom: 1px;
-            height: 7px;
-            background: var(--accent);
-            opacity: 0.15;
-            z-index: -1;
-        }
-        .about-text .drop {
-            font-family: var(--serif);
-            font-size: 48px;
-            font-style: italic;
-            font-weight: 400;
-            float: left;
-            line-height: 0.85;
-            margin: 4px 10px 0 0;
-            color: var(--accent);
-        }
-
-        /* Interests */
-        .interests {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        .interest {
-            padding: 14px 14px 12px;
-            background: var(--bg);
-            border: 1px solid var(--line);
-            border-radius: 2px;
-            transition: all .25s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .interest::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0;
-            width: 2px; height: 100%;
-            background: var(--accent);
-            transform: scaleY(0);
-            transform-origin: top;
-            transition: transform .4s cubic-bezier(.2,.9,.3,1);
-        }
-        .interest:hover { background: var(--bg-elevated); border-color: var(--line-2); }
-        .interest:hover::before { transform: scaleY(1); }
-        .interest .idx {
-            font-family: var(--mono);
-            font-size: 9px;
-            letter-spacing: 0.2em;
-            color: var(--ink-4);
-            margin-bottom: 6px;
-        }
-        .interest h4 {
-            font-family: var(--serif);
-            font-weight: 400;
-            font-size: 18px;
-            line-height: 1.1;
-            letter-spacing: -0.01em;
-            margin-bottom: 6px;
-        }
-        .interest h4 em { font-style: italic; color: var(--accent); }
-        .interest p {
-            font-size: 11px;
-            color: var(--ink-3);
-            line-height: 1.5;
-        }
-
-        /* News */
-        .news-card { flex: 1; min-height: 0; }
-        .news-scroll {
-            flex: 1;
-            min-height: 0;
-            overflow-y: auto;
-            padding-right: 6px;
-            margin-right: -6px;
-        }
-        .news-scroll::-webkit-scrollbar { width: 3px; }
-        .news-scroll::-webkit-scrollbar-track { background: transparent; }
-        .news-scroll::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 2px; }
-
-        .news-item {
-            display: grid;
-            grid-template-columns: 70px 12px 1fr auto;
-            gap: 10px;
-            padding: 9px 0;
-            border-bottom: 1px solid var(--line);
-            align-items: baseline;
-            position: relative;
-            transition: padding-left .25s ease;
-        }
-        .news-item:hover { padding-left: 6px; }
-        .news-item:last-child { border-bottom: none; }
-
-        .news-item .d {
-            font-family: var(--mono);
-            font-size: 9.5px;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: var(--ink-4);
-        }
-        .news-item .marker {
-            width: 5px; height: 5px;
-            background: var(--line-2);
             border-radius: 50%;
-            justify-self: center;
-            transition: background .25s ease;
+            border: 1px solid var(--line);
+            box-shadow: 0 14px 36px -18px rgba(20,24,40,0.4);
+            display: block; margin: 0 auto 20px;
         }
-        .news-item:hover .marker { background: var(--accent); }
-        .news-item .t {
-            font-family: var(--serif);
-            font-size: 14.5px;
-            font-weight: 400;
-            line-height: 1.3;
+        .sidebar .name {
+            font-size: 24px; font-weight: 700; letter-spacing: -0.01em;
+            color: var(--ink); line-height: 1.25;
+            margin-bottom: 4px;
+        }
+        .sidebar .name .zh { font-weight: 600; color: var(--ink-2); }
+        .sidebar .affil {
+            font-size: 14.5px; color: var(--ink-3);
+            padding-bottom: 14px; margin-bottom: 14px;
+            border-bottom: 1px solid var(--line);
+        }
+        .sidebar .affil a { font-weight: 500; }
+
+        .contacts { list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 14.5px; }
+        .contacts li { display: flex; align-items: center; gap: 11px; color: var(--ink-2); }
+        .contacts li svg { width: 16px; height: 16px; color: var(--ink-4); flex: none; }
+        .contacts li a { color: var(--ink-2); }
+        .contacts li a:hover { color: var(--accent); }
+
+        /* ─── MAIN COLUMN ─── */
+        .main { min-width: 0; }
+        .main > section:first-child { margin-top: 0; }
+
+        /* ─── SECTION HEADINGS ─── */
+        .sec-h {
+            font-size: 26px; font-weight: 700; letter-spacing: -0.015em;
+            color: var(--ink);
+            margin: 44px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--line);
+        }
+        .greet-h { border: none; padding-bottom: 0; margin: 4px 0 14px; }
+
+        /* ─── GREETINGS / BIO ─── */
+        .bio { font-size: 16px; color: var(--ink-2); }
+        .bio p { margin-bottom: 12px; }
+        .bio p:last-child { margin-bottom: 0; }
+        .bio strong { font-weight: 600; color: var(--ink); }
+        .bio .hl { color: var(--ink); font-weight: 500; border-bottom: 2px solid rgba(29,111,184,0.25); }
+
+        /* ─── NEWS (plain list) ─── */
+        .news { list-style: none; }
+        .news li {
+            position: relative;
+            padding: 6px 0 6px 20px;
+            font-size: 15.5px;
             color: var(--ink-2);
         }
-        .news-item .t b {
-            font-weight: 400;
-            font-style: italic;
-            color: var(--ink);
+        .news li::before {
+            content: "▪";
+            position: absolute; left: 2px; top: 5px;
+            color: var(--accent); font-size: 13px;
         }
-        .news-item .kind {
+        .news li .date {
             font-family: var(--mono);
-            font-size: 8.5px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: var(--ink-5);
-            padding: 2px 6px;
-            border: 1px solid var(--line);
-            border-radius: 2px;
+            font-size: 13px; color: var(--ink-4);
+            margin-right: 6px;
         }
-        .news-item .kind.conf { color: var(--accent); border-color: var(--accent-dim); background: var(--accent-dim); }
+        .news li b { font-weight: 600; color: var(--ink); }
+        .news-more { margin-top: 8px; padding-left: 20px; font-size: 14px; color: var(--ink-4); }
 
-        /* ═══════ RIGHT: PUBLICATIONS ═══════ */
-        .col-pubs {
-            padding: 20px 22px;
-        }
-        .pub-scroll {
-            flex: 1;
-            min-height: 0;
-            overflow-y: auto;
-            padding-right: 8px;
-            margin-right: -8px;
-        }
-        .pub-scroll::-webkit-scrollbar { width: 3px; }
-        .pub-scroll::-webkit-scrollbar-track { background: transparent; }
-        .pub-scroll::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 2px; }
-
-        .year-hd {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 16px 0 10px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--ink);
-        }
-        .year-hd:first-child { margin-top: 0; }
-        .year-hd .y {
-            font-family: var(--serif);
-            font-weight: 400;
-            font-style: italic;
-            font-size: 28px;
-            line-height: 1;
-            letter-spacing: -0.03em;
-            color: var(--ink);
-        }
-        .year-hd .cnt {
-            font-family: var(--mono);
-            font-size: 9px;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--ink-4);
-            margin-left: auto;
-        }
-
+        /* ─── PUBLICATIONS (image left / text right) ─── */
         .pub {
-            padding: 12px 0 14px;
-            border-bottom: 1px solid var(--line);
             display: grid;
-            grid-template-columns: 54px 1fr;
-            gap: 14px;
-            position: relative;
-            transition: all .25s ease;
+            grid-template-columns: 200px 1fr;
+            gap: 22px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--line);
+            align-items: center;
         }
         .pub:last-child { border-bottom: none; }
-        .pub::before {
-            content: "";
-            position: absolute;
-            left: -22px; top: 0;
-            width: 2px; height: 100%;
-            background: var(--accent);
-            opacity: 0;
-            transition: opacity .25s ease;
+        .thumb {
+            position: relative; overflow: hidden;
+            width: 200px; aspect-ratio: 16 / 10;
+            border-radius: 10px; border: 1px solid var(--line);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+            background:
+                radial-gradient(130% 130% at 0% 0%, rgba(29,111,184,0.10), transparent 55%),
+                linear-gradient(150deg, #f4f6fa, #eceff4);
+            transition: transform .2s ease, box-shadow .2s ease;
         }
-        .pub:hover::before { opacity: 1; }
+        .thumb.photo { background: #eef0f4; }
+        .thumb.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .pub:hover .thumb { transform: translateY(-2px); box-shadow: 0 14px 30px -16px rgba(20,24,40,0.35); }
+        .thumb .v { font-family: var(--serif); font-style: italic; font-size: 30px; font-weight: 600; color: var(--ink); line-height: 1; }
+        .thumb.top .v { color: var(--accent); }
+        .thumb .yr { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; color: var(--ink-4); }
+        .thumb .star {
+            position: absolute; top: 6px; right: 6px; z-index: 2;
+            font-size: 11px; color: var(--accent);
+            width: 20px; height: 20px; border-radius: 50%;
+            background: rgba(255,255,255,0.92);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+        }
+
+        .pub-note { font-size: 13.5px; color: var(--ink-4); margin: -6px 0 16px; }
+        .pub-note .me { color: var(--ink-2); font-weight: 600; }
 
         .pub-venue {
-            font-family: var(--mono);
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: var(--ink-3);
-            padding-top: 3px;
-            position: relative;
+            font-family: var(--mono); font-size: 12px; font-weight: 500;
+            letter-spacing: 0.06em; text-transform: uppercase;
+            color: var(--accent); margin-bottom: 3px;
         }
-        .pub-venue.top {
-            color: var(--accent);
-        }
-        .pub-venue.top::before {
-            content: "★";
-            position: absolute;
-            left: -12px; top: 2px;
-            font-size: 8px;
-            color: var(--accent);
+        .pub-venue.jrnl { color: var(--ink-4); }
+        .pub-title { font-size: 16px; font-weight: 600; line-height: 1.4; color: var(--ink); margin-bottom: 4px; }
+        .pub-authors { font-size: 14px; color: var(--ink-3); line-height: 1.5; margin-bottom: 8px; }
+        .pub-authors .me { color: var(--ink); font-weight: 600; }
+        .pub-links { font-size: 13.5px; }
+        .pub-links a { font-weight: 500; }
+        .pub-links .bar { color: var(--line-2); margin: 0 8px; }
+        .pub-links .soon { color: var(--ink-4); font-style: italic; }
+
+        /* ─── SERVICE ─── */
+        .service p { margin-bottom: 12px; font-size: 15.5px; }
+        .service-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .service-tags span {
+            font-family: var(--mono); font-size: 12.5px; color: var(--ink-2);
+            padding: 5px 11px; background: var(--bg-soft);
+            border: 1px solid var(--line); border-radius: 7px;
         }
 
-        .pub-title {
-            font-family: var(--serif);
-            font-size: 15.5px;
-            font-weight: 400;
-            line-height: 1.28;
-            letter-spacing: -0.005em;
-            color: var(--ink);
-            margin-bottom: 5px;
-        }
-        .pub-authors {
-            font-size: 11px;
-            color: var(--ink-3);
-            line-height: 1.45;
-            margin-bottom: 6px;
-        }
-        .pub-authors .me {
-            color: var(--ink);
-            font-weight: 600;
-            position: relative;
-        }
-        .pub-authors .me::after {
-            content: "";
-            position: absolute;
-            left: 0; right: 0; bottom: -1px;
-            height: 1px;
-            background: var(--accent);
-        }
-        .pub-links {
-            display: flex;
-            gap: 6px;
-        }
-        .pub-links a {
-            font-family: var(--mono);
-            font-size: 9px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: var(--ink-3);
-            padding: 3px 8px;
-            background: var(--bg);
-            border: 1px solid var(--line-2);
-            border-radius: 2px;
-            transition: all .2s ease;
-        }
-        .pub-links a:hover {
-            background: var(--ink);
-            color: var(--bg);
-            border-color: var(--ink);
-        }
-
-        /* ─── FOOTER ─────────────────────────────── */
+        /* ─── FOOTER ─── */
         footer {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            padding: 8px 8px 0;
-            font-family: var(--mono);
-            font-size: 9.5px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: var(--ink-4);
+            margin-top: 56px; padding-top: 22px;
             border-top: 1px solid var(--line);
+            text-align: center;
+            font-size: 13px; color: var(--ink-4);
         }
-        footer .r { justify-self: end; }
-        footer .c { justify-self: center; }
-        footer .c .lbl {
-            color: var(--ink-5);
-            margin-right: 8px;
-        }
-        footer .c span.v {
-            color: var(--ink-3);
-            font-family: var(--sans);
-            text-transform: none;
-            letter-spacing: 0;
-            font-size: 11px;
-            margin: 0 3px;
-        }
+        footer .mono { font-family: var(--mono); }
 
-        /* ─── ENTRANCE ──────────────────────────── */
-        @keyframes rise {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .topbar, main > *, footer {
-            opacity: 0;
-            animation: rise .8s cubic-bezier(.2,.9,.3,1) forwards;
-        }
-        .topbar { animation-delay: 0s; }
-        .col-id { animation-delay: .1s; }
-        .col-mid > *:nth-child(1) { animation: rise .8s cubic-bezier(.2,.9,.3,1) .2s forwards; opacity: 0; }
-        .col-mid > *:nth-child(2) { animation: rise .8s cubic-bezier(.2,.9,.3,1) .28s forwards; opacity: 0; }
-        .col-mid > *:nth-child(3) { animation: rise .8s cubic-bezier(.2,.9,.3,1) .36s forwards; opacity: 0; }
-        .col-mid { opacity: 1; animation: none; }
-        .col-pubs { animation-delay: .44s; }
-        footer { animation-delay: .6s; }
-
-        /* ─── RESPONSIVE ─────────────────────────── */
-        @media (max-width: 1200px) {
-            body { overflow: auto; }
-            .page { height: auto; min-height: 100vh; padding: 20px; }
-            main {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-            .col-pubs, .news-card, .col-mid, .news-scroll, .pub-scroll {
-                overflow: visible;
-                min-height: auto;
-            }
-            .news-card { flex: none; }
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 860px) {
+            .wrap { grid-template-columns: 1fr; gap: 28px; padding-top: 34px; }
+            .sidebar { position: static; text-align: center; max-width: 420px; margin: 0 auto; }
+            .sidebar .affil { border-bottom: none; padding-bottom: 4px; }
+            .contacts { align-items: center; }
         }
         @media (max-width: 640px) {
-            .topbar { grid-template-columns: 1fr; gap: 6px; text-align: center; }
-            .topbar .r { justify-self: center; }
-            .interests { grid-template-columns: 1fr; }
-            footer { grid-template-columns: 1fr; gap: 6px; text-align: center; }
-            footer .r, footer .c { justify-self: center; }
-            .id-name { font-size: 40px; }
+            body { font-size: 15px; }
+            .nav-links { gap: 14px; }
+            .nav-links a { font-size: 13px; }
+            .sidebar img { width: 160px; height: 160px; }
+            .pub { grid-template-columns: 1fr; gap: 14px; justify-items: center; text-align: center; }
+            .thumb { width: 100%; max-width: 240px; }
+            .pub-authors, .pub-title, .pub-venue { text-align: center; }
         }
     </style>
 </head>
 <body>
 
-<div class="page">
-
-    <!-- ═══ TOP BAR ═══ -->
-    <div class="topbar">
-        <div class="l">
-            <span class="dot"></span>
-            <span>Available · Collaboration open</span>
-        </div>
-        <div class="brand">Jiawei <em>Wu</em></div>
-        <div class="r">
-            <nav>
-                <a href="#about">About</a>
-                <a href="#research">Research</a>
+    <!-- ═══ NAV ═══ -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="#top" class="brand">Jiawei Wu's Homepage</a>
+            <div class="nav-links">
                 <a href="#news">News</a>
                 <a href="#pubs">Publications</a>
-            </nav>
+                <a href="#service">Service</a>
+            </div>
         </div>
+    </nav>
+
+    <div class="wrap" id="top">
+
+        <!-- ═══ SIDEBAR ═══ -->
+        <aside class="sidebar">
+            <img src="https://raw.githubusercontent.com/Fire-friend/home/refs/heads/main/img/potrait.jpg" alt="Jiawei Wu">
+            <div class="name">Jiawei Wu <span class="zh">吴嘉炜</span></div>
+            <div class="affil">
+                PhD Candidate<br>
+                <a href="https://www.sysu.edu.cn/" target="_blank">Sun Yat-sen University</a>
+            </div>
+            <ul class="contacts">
+                <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                    Shenzhen, China
+                </li>
+                <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 6 9-6"/></svg>
+                    <a href="mailto:wujw97@mail2.sysu.edu.cn">Email</a>
+                </li>
+                <li>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <a href="https://github.com/Fire-friend" target="_blank">Github</a>
+                </li>
+                <li>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>
+                    <a href="https://scholar.google.com/citations?user=wwHeXF0AAAAJ&hl=zh-CN" target="_blank">Google Scholar</a>
+                </li>
+            </ul>
+        </aside>
+
+      <!-- ═══ MAIN ═══ -->
+      <div class="main">
+
+        <!-- ═══ GREETINGS ═══ -->
+        <section id="about">
+            <h2 class="sec-h greet-h">Welcome to my homepage! 😄</h2>
+            <div class="bio">
+                <p>
+                    I am a PhD candidate at <strong>Sun Yat-sen University</strong> (Shenzhen Campus),
+                    advised by Prof. <a href="https://fvl2020.github.io/fvl.github.com/" target="_blank">Zhi Jin</a>.
+                    Before that, I received my degree working on computer vision and pattern recognition.
+                </p>
+                <p>
+                    My research interests center around <span class="hl">low-level vision</span> and
+                    <span class="hl">learning with limited data</span>, including
+                    <strong>image restoration</strong>, <strong>diffusion models</strong>,
+                    <strong>image matting</strong>, and <strong>semi-/self-supervised learning</strong>.
+                    Broadly, I am interested in how to recover faithful visual signals from partial and imperfect observations.
+                </p>
+                <p>
+                    I am open to collaboration and always happy to discuss research via <a href="mailto:wujw97@mail2.sysu.edu.cn">email</a>.
+                </p>
+            </div>
+        </section>
+
+        <!-- ═══ NEWS ═══ -->
+        <section id="news">
+            <h2 class="sec-h">🔥 News</h2>
+            <ul class="news">
+                <li><span class="date">[2026.06]</span> 🎉 Two papers accepted at <b>IEEE TIP</b>.</li>
+                <li><span class="date">[2026.04]</span> 🎉 Paper accepted at <b>IEEE TMI</b>.</li>
+                <li><span class="date">[2026.04]</span> 🎉 Paper accepted at <b>IEEE TIP</b>.</li>
+                <li><span class="date">[2025.11]</span> 🎉 Paper accepted at <b>AAAI 2026</b>.</li>
+                <li><span class="date">[2025.07]</span> 🎉 Paper accepted at <b>ACM MM 2025</b>.</li>
+                <li><span class="date">[2025.07]</span> 🎉 Paper accepted at <b>ICCV 2025</b>.</li>
+                <li><span class="date">[2025.07]</span> 🎉 Paper accepted at <b>IEEE TIP</b>.</li>
+                <li><span class="date">[2024.09]</span> 🎉 Paper accepted at <b>ESWA</b>.</li>
+                <li><span class="date">[2024.07]</span> 🎉 Paper accepted at <b>ECCV 2024</b>.</li>
+                <li><span class="date">[2023.07]</span> 🎉 Paper accepted at <b>IEEE TCSVT</b>.</li>
+                <li><span class="date">[2023.06]</span> 🎉 Paper accepted at <b>ICML 2023</b>.</li>
+            </ul>
+        </section>
+
+        <!-- ═══ PUBLICATIONS ═══ -->
+        <section id="pubs">
+            <h2 class="sec-h">📑 Selected Publications</h2>
+            <p class="pub-note"><span class="me">Bold</span> = my name · <span class="star" style="color:var(--accent)">★</span> = first-authored top-tier venue.</p>
+
+            <div class="pub">
+                <div class="thumb photo top"><span class="star">★</span><img src="img/teaser_vcmair.png" alt="VCMAIR teaser"></div>
+                <div>
+                    <div class="pub-venue">IEEE TIP · 2026</div>
+                    <div class="pub-title">Virtual Consistency Model for All-in-one Image Restoration</div>
+                    <div class="pub-authors"><span class="me">Jiawei Wu</span>, Luwei Tu, Zhe Wang, Zhi Jin, Kaihao Zhang, Wenqi Ren, Xiaochun Cao</div>
+                    <div class="pub-links"><span class="soon">Paper coming soon</span></div>
+                </div>
+            </div>
+
+            <div class="pub">
+                <div class="thumb photo top"><span class="star">★</span><img src="img/teaser_freedehaze.png" alt="FreeDehaze teaser"></div>
+                <div>
+                    <div class="pub-venue">IEEE TIP · 2026</div>
+                    <div class="pub-title">FreeDehaze: Towards Training-free Real-world Image Dehazing via Diffusion Degradation Prior</div>
+                    <div class="pub-authors"><span class="me">Jiawei Wu</span>, Yikun Ma, Wenqi Ren, Zhi Jin, Xiaochun Cao</div>
+                    <div class="pub-links"><span class="soon">Paper coming soon</span></div>
+                </div>
+            </div>
+
+            <div class="pub">
+                <a class="thumb photo top" href="https://arxiv.org/abs/2504.09377" target="_blank"><span class="star">★</span><img src="img/teaser_hogformer.png" alt="HOGformer teaser"></a>
+                <div>
+                    <div class="pub-venue">AAAI 2026</div>
+                    <div class="pub-title">Gradient as Conditions: Rethinking HOG for All-in-One Image Restoration</div>
+                    <div class="pub-authors"><span class="me">Jiawei Wu</span>, Zhifei Yang, Zhe Wang, Zhi Jin</div>
+                    <div class="pub-links">
+                        <a href="https://arxiv.org/abs/2504.09377" target="_blank">Paper</a><span class="bar">|</span>
+                        <a href="https://github.com/Fire-friend/HOGformer" target="_blank">Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pub">
+                <a class="thumb photo top" href="https://arxiv.org/abs/2408.08149" target="_blank"><span class="star">★</span><img src="img/teaser_vat.png" alt="VaT teaser"></a>
+                <div>
+                    <div class="pub-venue">ECCV 2024</div>
+                    <div class="pub-title">Unsupervised Variational Translator for Bridging Image Restoration and High-Level Vision Tasks</div>
+                    <div class="pub-authors"><span class="me">Jiawei Wu</span>, Zhi Jin</div>
+                    <div class="pub-links">
+                        <a href="https://arxiv.org/abs/2408.08149" target="_blank">Paper</a><span class="bar">|</span>
+                        <a href="https://github.com/Fire-friend/VaT" target="_blank">Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pub">
+                <a class="thumb photo top" href="https://arxiv.org/abs/2306.01452" target="_blank"><span class="star">★</span><img src="img/teaser_dugmatting.png" alt="dugMatting teaser"></a>
+                <div>
+                    <div class="pub-venue">ICML 2023</div>
+                    <div class="pub-title">dugMatting: Decomposed-Uncertainty-Guided Matting</div>
+                    <div class="pub-authors"><span class="me">Jiawei Wu</span>, Changqing Zhang, Zuoyong Li, Huazhu Fu, Xi Peng, Joey Tianyi Zhou</div>
+                    <div class="pub-links">
+                        <a href="https://arxiv.org/abs/2306.01452" target="_blank">Paper</a><span class="bar">|</span>
+                        <a href="https://github.com/Fire-friend/dugMatting" target="_blank">Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pub">
+                <div class="thumb"><span class="v">TCSVT</span><span class="yr">2023</span></div>
+                <div>
+                    <div class="pub-venue jrnl">IEEE TCSVT · 2023</div>
+                    <div class="pub-title">Information Transfer in Semi-Supervised Semantic Segmentation</div>
+                    <div class="pub-authors"><span class="me">Jiawei Wu</span>, Haoyi Fan, Zuoyong Li, Guang-Hai Liu, Shouying Lin</div>
+                    <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/abstract/document/10172351" target="_blank">Paper</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pub">
+                <div class="thumb"><span class="v">IJIS</span><span class="yr">2022</span></div>
+                <div>
+                    <div class="pub-venue jrnl">IJIS · 2022</div>
+                    <div class="pub-title">Foreground–Background Decoupling Matting</div>
+                    <div class="pub-authors"><span class="me">Jiawei Wu</span>, Guolin Zheng, Kun Zeng, Haoyi Fan, Zuoyong Li</div>
+                    <div class="pub-links">
+                        <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/int.23018" target="_blank">Paper</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pub">
+                <div class="thumb"><span class="v">ICME</span><span class="yr">2021</span></div>
+                <div>
+                    <div class="pub-venue jrnl">ICME 2021</div>
+                    <div class="pub-title">Semi-Supervised Semantic Segmentation via Entropy Minimization</div>
+                    <div class="pub-authors"><span class="me">Jiawei Wu</span>, Haoyi Fan, Xiaoqing Zhang, Shouying Lin, Zuoyong Li</div>
+                    <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/abstract/document/9428304/" target="_blank">Paper</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ SERVICE ═══ -->
+        <section id="service" class="service">
+            <h2 class="sec-h">📝 Academic Service</h2>
+            <p>Reviewer for the following conferences and journals:</p>
+            <div class="service-tags">
+                <span>CVPR</span><span>ICCV</span><span>AAAI</span><span>ACM MM</span>
+                <span>WACV</span><span>IEEE TIP</span><span>IEEE TMM</span><span>IEEE TCSVT</span>
+            </div>
+        </section>
+
+        <footer>
+            © <span id="yr"></span> Jiawei Wu · <span class="mono">Last updated Apr 2026</span>
+        </footer>
+
+      </div><!-- /.main -->
+
     </div>
 
-    <!-- ═══ MAIN ═══ -->
-    <main>
-
-        <!-- ═══ LEFT: IDENTITY ═══ -->
-        <section class="card col-id" id="about">
-            <div class="portrait-wrap">
-                <div class="portrait">
-                    <img src="https://raw.githubusercontent.com/Fire-friend/home/refs/heads/main/img/potrait.jpg" alt="Jiawei Wu">
-                </div>
-            </div>
-
-            <h1 class="id-name">Jiawei<br><em>Wu.</em></h1>
-            <div class="id-role">PhD Candidate <span class="sep">·</span> Computer Vision</div>
-
-            <p class="id-bio">
-                I'm a doctoral researcher at <em>Sun Yat-sen University</em>, Shenzhen, advised by Prof. <a href="https://fvl2020.github.io/fvl.github.com/" target="_blank">Zhi Jin</a>.
-            </p>
-
-            <div class="id-contact">
-                <div class="row">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 6 9-6"/></svg>
-                    <a href="mailto:wujw97@mail2.sysu.edu.cn">wujw97@mail2.sysu.edu.cn</a>
-                </div>
-                <div class="row">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
-                    <span>SYSU · Shenzhen Campus</span>
-                </div>
-            </div>
-
-            <div class="id-socials">
-                <a href="https://scholar.google.com/citations?user=wwHeXF0AAAAJ&hl=zh-CN" target="_blank">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>
-                    Scholar
-                </a>
-                <a href="https://github.com/Fire-friend" target="_blank">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                    GitHub
-                </a>
-                <a href="#">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
-                    CV
-                </a>
-            </div>
-        </section>
-
-        <!-- ═══ MIDDLE ═══ -->
-        <section class="col-mid">
-
-            <div class="card">
-                <div class="hd">
-                    <h2><span class="num">01</span> About <em>Me</em></h2>
-                    <span class="tag">Ethos</span>
-                </div>
-                <div class="about-text">
-                    <p>
-                        <span class="drop">I</span>'m drawn to the quieter problems in vision — where data is imperfect, labels are few, and signal refuses to separate from noise. I believe <span class="key">elegance is a form of evidence</span>: a method that can explain its own uncertainty is usually telling us something real.
-                    </p>
-                    <p>
-                        My work treats <em>restoration</em>, <em>matting</em>, and <em>semi-supervised learning</em> as one question — how to recover a faithful world from partial measurement.
-                    </p>
-                </div>
-            </div>
-
-            <div class="card" id="research">
-                <div class="hd">
-                    <h2><span class="num">02</span> Research <em>Interests</em></h2>
-                    <span class="tag">Inquiry</span>
-                </div>
-                <div class="interests">
-                    <div class="interest">
-                        <div class="idx">I / 02</div>
-                        <h4>Low-level <em>Vision</em></h4>
-                        <p>Image restoration, diffusion models, matting.</p>
-                    </div>
-                    <div class="interest">
-                        <div class="idx">II / 02</div>
-                        <h4>Limited <em>Data</em></h4>
-                        <p>Semi-, self-supervised, few-shot learning.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card news-card" id="news">
-                <div class="hd">
-                    <h2><span class="num">03</span> Recent <em>News</em></h2>
-                    <span class="tag">Dispatch</span>
-                </div>
-                <div class="news-scroll">
-                    <div class="news-item"><div class="d">Apr 2026</div><div class="marker"></div><div class="t">Paper accepted at <b>IEEE TMI</b></div><div class="kind">Jrnl</div></div>
-                    <div class="news-item"><div class="d">Apr 2026</div><div class="marker"></div><div class="t">Paper accepted at <b>IEEE TIP</b></div><div class="kind">Jrnl</div></div>
-                    <div class="news-item"><div class="d">Nov 2025</div><div class="marker"></div><div class="t">Paper accepted at <b>AAAI</b></div><div class="kind conf">Conf</div></div>
-                    <div class="news-item"><div class="d">Jul 2025</div><div class="marker"></div><div class="t">Paper accepted at <b>ACM MM</b></div><div class="kind conf">Conf</div></div>
-                    <div class="news-item"><div class="d">Jul 2025</div><div class="marker"></div><div class="t">Paper accepted at <b>ICCV</b></div><div class="kind conf">Conf</div></div>
-                    <div class="news-item"><div class="d">Jul 2025</div><div class="marker"></div><div class="t">Paper accepted at <b>IEEE TIP</b></div><div class="kind">Jrnl</div></div>
-                    <div class="news-item"><div class="d">Sep 2024</div><div class="marker"></div><div class="t">Paper accepted at <b>ESWA</b></div><div class="kind">Jrnl</div></div>
-                    <div class="news-item"><div class="d">Jul 2024</div><div class="marker"></div><div class="t">Paper accepted at <b>ECCV 2024</b></div><div class="kind conf">Conf</div></div>
-                    <div class="news-item"><div class="d">Jul 2023</div><div class="marker"></div><div class="t">Paper accepted at <b>IEEE TCSVT</b></div><div class="kind">Jrnl</div></div>
-                    <div class="news-item"><div class="d">Jun 2023</div><div class="marker"></div><div class="t">Paper accepted at <b>ICML 2023</b></div><div class="kind conf">Conf</div></div>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- ═══ RIGHT: PUBLICATIONS ═══ -->
-        <section class="card col-pubs" id="pubs">
-            <div class="hd">
-                <h2><span class="num">04</span> Selected <em>Publications</em></h2>
-                <span class="tag">8 Entries</span>
-            </div>
-            <div class="pub-scroll">
-
-                <div class="year-hd"><span class="y">2024</span><span class="cnt">02 entries</span></div>
-
-                <div class="pub">
-                    <div class="pub-venue top">ECCV</div>
-                    <div>
-                        <div class="pub-title">Unsupervised Variational Translator for Bridging Image Restoration and High-Level Vision Tasks</div>
-                        <div class="pub-authors"><span class="me">Jiawei Wu</span>, Zhi Jin</div>
-                        <div class="pub-links">
-                            <a href="https://arxiv.org/abs/2408.08149" target="_blank">Paper</a>
-                            <a href="https://github.com/Fire-friend/VaT" target="_blank">Code</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="pub">
-                    <div class="pub-venue">ESWA</div>
-                    <div>
-                        <div class="pub-title">Leukocyte Classification Using Relative-Relationship-Guided Contrastive Learning</div>
-                        <div class="pub-authors">Zuoyong Li, Qinghua Lin, <span class="me">Jiawei Wu</span>, Taotao Lai, Rongteng Wu, David Zhang</div>
-                        <div class="pub-links">
-                            <a href="https://www.sciencedirect.com/science/article/pii/S0957417424022577" target="_blank">Paper</a>
-                            <a href="https://github.com/AlchemyEmperor/ReCLR" target="_blank">Code</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="year-hd"><span class="y">2023</span><span class="cnt">03 entries</span></div>
-
-                <div class="pub">
-                    <div class="pub-venue top">ICML</div>
-                    <div>
-                        <div class="pub-title">dugMatting: Decomposed-Uncertainty-Guided Matting</div>
-                        <div class="pub-authors"><span class="me">Jiawei Wu</span>, Changqing Zhang, Zuoyong Li, Huazhu Fu, Xi Peng, Joey Tianyi Zhou</div>
-                        <div class="pub-links">
-                            <a href="https://arxiv.org/abs/2306.01452" target="_blank">Paper</a>
-                            <a href="https://github.com/Fire-friend/dugMatting" target="_blank">Code</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="pub">
-                    <div class="pub-venue">TCSVT</div>
-                    <div>
-                        <div class="pub-title">Information Transfer in Semi-Supervised Semantic Segmentation</div>
-                        <div class="pub-authors"><span class="me">Jiawei Wu</span>, Haoyi Fan, Zuoyong Li, Guang-Hai Liu, Shouying Lin</div>
-                        <div class="pub-links">
-                            <a href="https://ieeexplore.ieee.org/abstract/document/10172351" target="_blank">Paper</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="pub">
-                    <div class="pub-venue">IJIS</div>
-                    <div>
-                        <div class="pub-title">Foreground–Background Decoupling Matting</div>
-                        <div class="pub-authors"><span class="me">Jiawei Wu</span>, Guolin Zheng, Kun Zeng, Haoyi Fan, Zuoyong Li</div>
-                        <div class="pub-links">
-                            <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/int.23018" target="_blank">Paper</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="year-hd"><span class="y">2022</span><span class="cnt">01 entry</span></div>
-
-                <div class="pub">
-                    <div class="pub-venue">TIM</div>
-                    <div>
-                        <div class="pub-title">Semi-Supervised Leukocyte Segmentation via Adversarial Learning with Reconstruction Enhancement</div>
-                        <div class="pub-authors">Shenghua Teng, <span class="me">Jiawei Wu</span>, Yuanyuan Chen, Haoyi Fan, Xinrong Cao, Zuoyong Li</div>
-                        <div class="pub-links">
-                            <a href="https://ieeexplore.ieee.org/abstract/document/9829239/" target="_blank">Paper</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="year-hd"><span class="y">2021</span><span class="cnt">01 entry</span></div>
-
-                <div class="pub">
-                    <div class="pub-venue">ICME</div>
-                    <div>
-                        <div class="pub-title">Semi-Supervised Semantic Segmentation via Entropy Minimization</div>
-                        <div class="pub-authors"><span class="me">Jiawei Wu</span>, Haoyi Fan, Xiaoqing Zhang, Shouying Lin, Zuoyong Li</div>
-                        <div class="pub-links">
-                            <a href="https://ieeexplore.ieee.org/abstract/document/9428304/" target="_blank">Paper</a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-    </main>
-
-    <!-- ═══ FOOTER ═══ -->
-    <footer>
-        <span class="l">© <span id="yr"></span> · Jiawei Wu</span>
-        <span class="c"><span class="lbl">Reviewer</span><span class="v">CVPR</span>·<span class="v">ICCV</span>·<span class="v">AAAI</span>·<span class="v">MM</span>·<span class="v">WACV</span>·<span class="v">TIP</span>·<span class="v">TMM</span>·<span class="v">TCSVT</span></span>
-        <span class="r">Last revised · Apr 2026</span>
-    </footer>
-
-</div>
-
-<script>
-    document.getElementById('yr').textContent = new Date().getFullYear();
-</script>
+    <script>
+        document.getElementById('yr').textContent = new Date().getFullYear();
+    </script>
 
 </body>
 </html>
